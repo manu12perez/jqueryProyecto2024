@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <img src="images/paisaje1.jfif">
+    <img src="images/paisaje2.jfif">
+    <img src="images/paisaje3.jpg">
+    <script src="js/jquery-3.7.1.js"></script> 
+    <script>
+        $(document).ready(function(){
+            //Al pasar ratón por encima cambia imagen
+            $("img").mouseover(function(){
+                $(this).attr("src", "images/joker.jpg");
+            })
+            //Al sacar ratón de la imagen cambia
+            $("img").mouseout(function(){
+                $(this).attr("src", "images/paisaje1.jfif")
+            })
+            //Al hacer click muestra en consola la imagen mostrada
+            $("img").click(function(){
+                var imagen = $(this).attr("src");
+                console.log("Pulsando sobre " + imagen);
+            })
+        })
+    </script>
+</body>
+</html>
