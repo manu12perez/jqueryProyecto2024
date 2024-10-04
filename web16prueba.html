@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB 16 Clientes XML</title>
+</head>
+ 
+<body>
+    <h1>Clientes XML</h1>
+    <div id="divbotones" style="text-align: center;"></div>
+    <hr />
+    <div id="divdatos"></div>
+ 
+    <!-- scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // URL del XML
+            var url = "https://apiclientesxml.azurewebsites.net/api/Clientes";
+ 
+            $.get(url, function (data) {
+                console.log("XML cargado con éxito");
+ 
+                // limpiamos el div de botones
+                $("#divbotones").html("");
+ 
+                // recorremos los datos del XML
+                $(data).find("Cliente").each(function () {
+                    // obtenemos los datos del cliente
+                    var contactName = $(this).find("Nombre").text();
+                    var contactEmail = $(this).find("Email").text();
+                    var contactImg = $(this).find("Imagen").text();
+ 
+                    // generamos el botón
+                    var boton = $("<button>", {
+                        text: contactName,
+                        style: "margin: 7px;", // estilo del botón
+                    });
+ 
+                    // añadimos el botón al div
+                    $("#divbotones").append(boton);
+ 
+                    // asignamos el evento click al botón
+                    boton.click(function () {
+                        console.log("Pulsado: " + contactName);
+ 
+                        // generamos los datos de email e imagen
+                        var datos =
+                            "<h2 style='margin: 7px;'>" + contactName + "</h2>" +
+                            "<h4>" + contactEmail + "</h4>" +
+                            "<img src='" + contactImg + "' style='width: 300px;' alt='Imagen del cliente' />";
+ 
+                        // limpiamos el div de datos y mostramos los nuevos
+                        $("#divdatos").html(datos);
+                    });
+                });
+            }).fail(function () {
+                console.log("Error al cargar el XML.");
+            });
+        });
+    </script>
+</body>
+ 
+</html>
