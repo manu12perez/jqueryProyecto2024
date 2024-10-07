@@ -19,7 +19,7 @@
             $.get(url, function (data) {
                 $(data).find("Cliente").each(function () {
                     var nombre = $(this).find("Nombre").text();
-                    var email = $(this).find("Email").text(); 
+                    var email = $(this).find("Email").text();
                     var imagen = $(this).find("Imagen").text();
                     var boton = $("<button>", {
                         "text": nombre,
@@ -28,7 +28,9 @@
                     $("#contenedor").append(boton);
                     boton.click(function () {
                         console.log(nombre);
-                        var datosCliente = "<h2>" + nombre + "</h2>" + "<h4>" + email + "</h4>"+ "<img src=" + imagen + "/>";
+                        var datosCliente = "<h2 style='margin: 7px;'>" + nombre + "</h2>" +
+                            "<h4>" + email + "</h4>" +
+                            "<img src='" + imagen + "' style='width: 300px;' alt='Imagen del cliente' />";
 
                         $("#contenedordatos").html(datosCliente);
                     })
