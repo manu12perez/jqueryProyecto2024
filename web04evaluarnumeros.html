@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <h1>Comparar MAYOR, MENOR e INTERMEDIO</h1>
     <label>Número 1</label>
-    <input type="text" id="cajanumero1" /> <br><br> 
+    <input type="text" id="cajanumero1" /> <br /><br />
     <label>Número 2</label>
-    <input type="text" id="cajanumero2" /> <br><br>
+    <input type="text" id="cajanumero2" /> <br /><br />
     <label> Número 3</label>
-    <input type="text" id="cajanumero3" /> <br><br>
+    <input type="text" id="cajanumero3" /> <br /><br />
     <button id="botoncomparar">Comparar números</button>
     <h1 style="color:green" id="resultado"></h1>
 
     <script src="js/jquery-3.7.1.js"></script>
     <script>
-        $(document).ready(function(){
-            $("#botoncomparar").click(function(){
+        $(document).ready(function () {
+            $("#botoncomparar").click(function () {
                 var num1 = parseInt($("#cajanumero1").val());
                 var num2 = parseInt($("#cajanumero2").val());
                 var num3 = parseInt($("#cajanumero3").val());
                 var mayor, intermedio, menor;
-            
+
                 if (num1 >= num2 && num1 >= num3) {
                     mayor = num1;
                     if (num2 >= num3) {
@@ -104,4 +106,5 @@
     -->
 
 </body>
+
 </html>

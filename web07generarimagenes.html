@@ -18,6 +18,7 @@
     <input type="range" id="rango" min="1" max="20" value="1">
     <span id="valorrango"></span>
     <div id="contenedor"></div>
+
     <script src="js/jquery-3.7.1.js"></script>
     <script>
         $(document).ready(function () {
@@ -26,13 +27,13 @@
                 $("#valorrango").text(numImagenes);
                 //LIMPIAMOS EL CONTENEDOR DE IMAGENES
                 $("#contenedor").text("");
-                for (var i = 1; i <= numImagenes; i++){
-                    var imagen = $("<img>", {"src":"images/joker.jpg"});
+                for (var i = 1; i <= numImagenes; i++) {
+                    var imagen = $("<img>", { "src": "images/joker.jpg" });
                     $("#contenedor").append(imagen);
-                    imagen.mouseover(function(){
-                        $(this).attr("src", "images/paisaje2.jfif")
+                    imagen.mouseover(function () {
+                        $(this).attr("src", "images/batman.jpg")
                     })
-                    imagen.mouseout(function(){
+                    imagen.mouseout(function () {
                         $(this).attr("src", "images/joker.jpg")
                     })
                 }
@@ -40,4 +41,5 @@
         })
     </script>
 </body>
+
 </html>
