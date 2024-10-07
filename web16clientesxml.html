@@ -19,7 +19,7 @@
             $.get(url, function (data) {
                 $(data).find("Cliente").each(function () {
                     var nombre = $(this).find("Nombre").text();
-                    var email = $(this).find("Email").text();
+                    var email = $(this).find("Email").text(); 
                     var imagen = $(this).find("Imagen").text();
                     var boton = $("<button>", {
                         "text": nombre,
