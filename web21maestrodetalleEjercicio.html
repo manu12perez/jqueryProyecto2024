@@ -1,0 +1,46 @@
+<!-- Modificamos el ejemplo de la siguiente forma:
+No quiero EACH en la búsqueda, quiero directamente el jugador. -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Maestr Detalle Jugadores JSON</h1>
+    <select id="selectjugador"></select>
+    <div id="datosjugador"></div>
+
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Cargar los jugadores desde el archivo JSON
+            $.getJSON("documents/jugadores.json", function (data) {
+                var datosJugadores = data.jugadores; // Guardamos la lista de jugadores
+                $.each(data.jugadores, function (index, jugador) {
+                    var nombre = jugador.nombre;
+                    var option = $("<option>", { "text": nombre, "value": index });
+                    $("#selectjugador").append(option);
+                })
+            })
+            
+            // Al cambiar el jugador seleccionado
+            $("#selectjugador").change(function () {
+                var index = $(this).val();
+                var jugador = datosJugadores[index];
+                if (jugador) { // Verificar si el jugador existe
+                    var html = "";
+                    html += "<h1 style='color:blue'>" + jugador.nombre + "</h1>";
+                    html += "<h3> Posición: " + jugador.posicion + ", Edad: " + jugador.edad + "</h3>";
+                    html += "<img src='" + jugador.imagen + "' style='width: 150px; height: 150px' />";
+                    $("#datosjugador").html(html);
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>
