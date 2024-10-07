@@ -10,11 +10,11 @@
 <body>
     <h1>CRUD Departamentos XML</h1>
     <label>Id Departamentos</label>
-    <input type="text" id="cajaid"><br /><br />
+    <input type="text" id="cajaid" /><br /><br />
     <label>Nombre departamentos</label>
-    <input type="text" id="cajanombre"><br /><br />
+    <input type="text" id="cajanombre" /><br /><br />
     <label>Localidad</label>
-    <input type="text" id="cajalocalidad"><br /><br />
+    <input type="text" id="cajalocalidad" /><br /><br />
     <button id="botoninsert">Insertar</button>
     <button id="botonupdate">Modificar</button>
     <button id="botondelete">Eliminar</button>
@@ -55,39 +55,39 @@
                     }
                 })
             })
-        })
 
-        $("#botonupdate").click(function () {
-            var id = $("#cajaid").val();
-            var nombre = $("#cajanombre").val();
-            var localidad = $("#cajalocalidad").val();
-            var datosXML = getDepartamentoXML(id, nombre, localidad);
-            var request = "api/Departamentos";
-            $.ajax({
-                url: url + request,
-                type: "PUT",
-                contentType: "text/xml",
-                data: datosXML,
-                success: function () {
-                    console.log("Modificando");
-                    loadDepartamentos();
-                }
+            $("#botonupdate").click(function () {
+                var id = $("#cajaid").val();
+                var nombre = $("#cajanombre").val();
+                var localidad = $("#cajalocalidad").val();
+                var datosXML = getDepartamentoXML(id, nombre, localidad);
+                var request = "api/Departamentos";
+                $.ajax({
+                    url: url + request,
+                    type: "PUT",
+                    contentType: "text/xml",
+                    data: datosXML,
+                    success: function () {
+                        console.log("Modificando");
+                        loadDepartamentos();
+                    }
+                })
+            })
+
+            $("#botondelete").click(function () {
+                var id = $("#cajaid").val();
+                var request = "api/Departamentos/" + id;
+                $.ajax({
+                    url: url + request,
+                    type: "DELETE",
+                    success: function () {
+                        console.log("Eliminando");
+                        loadDepartamentos();
+                    }
+                })
             })
         })
-
-        $("#botondelete").click(function () {
-            var id = $("#cajaid").val();
-            var request = "api/Departamentos/" + id;
-            $.ajax({
-                url: url + request,
-                type: "DELETE",
-                success: function () {
-                    console.log("Eliminando");
-                    loadDepartamentos();
-                }
-            })
-        })
-
+        
         function getDepartamentoXML(id, nombre, localidad) {
             var datosXML = "<Departamento>";
             datosXML += "<IdDepartamento>" + id + "</IdDepartamento>";
