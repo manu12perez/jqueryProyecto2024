@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Maestro Detalle Empleados Departamento</h1>
+    <ul id="listadepartamentos"></ul>
+    <table id="tablaempleados" border="1"></table>
+
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+        var urlDepartamentos = "https://apicruddepartamentoscore.azurewebsites.net/";
+        var urlEmpleados = "https://apiempleadosspgs.azurewebsites.net/";
+        
+        $(document).ready(function () {
+            loadDepartamentos();
+        });
+
+        function loadDepartamentos() {
+            var request = "api/departamentos";
+            $.getJSON(urlDepartamentos + request, function (data) {
+                var html = "";
+                $.each(data, function (index, departamento) {
+                    html += "<li>" + departamento.nombre + " <a href='#' onclick='loadEmpleados(" + departamento.numero + ")'>Empleados</a></li>";
+                });
+                $("#listadepartamentos").html(html);
+            });
+        }
+
+        function loadEmpleados(departamentoNumero) {
+            var request = "api/empleados"; 
+            $.getJSON(urlEmpleados + request, function (data) {
+                var html = "";
+                html += "<thead>";
+                html += "<tr>";
+                html += "<th>Id Empleado</th>";
+                html += "<th>Apellido</th>";
+                html += "<th>Oficio</th>";
+                html += "<th>Salario</th>";
+                html += "<th>Departamento</th>";
+                html += "</tr>";
+                html += "</thead>";
+                html += "<tbody>";
+
+                // Filtramos los empleados por departamento
+                var empleadosFiltrados = data.filter(function (empleado) {
+                    return empleado.departamento === departamentoNumero;
+                });
+
+                // Generamos las filas de la tabla solo para los empleados filtrados
+                $.each(empleadosFiltrados, function (index, empleado) {
+                    html += "<tr>";
+                    html += "<td>" + empleado.idEmpleado + "</td>";
+                    html += "<td>" + empleado.apellido + "</td>";
+                    html += "<td>" + empleado.oficio + "</td>";
+                    html += "<td>" + empleado.salario + "</td>";
+                    html += "<td>" + empleado.departamento + "</td>";
+                    html += "</tr>";
+                });
+
+                html += "</tbody>";
+                $("#tablaempleados").html(html);
+            });
+        }
+    </script>
+</body>
+
+</html>
+
