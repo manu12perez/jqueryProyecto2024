@@ -118,11 +118,18 @@
 
     <main class="container">
         <div class="bg-body-tertiary p-5 rounded">
-            <h1>Navbar example</h1>
-            <p class="lead">This example is a quick exercise to illustrate how fixed to top navbar works. As you scroll,
-                it will remain fixed to the top of your browser’s viewport.</p>
-            <a class="btn btn-lg btn-primary" href="/docs/5.3/components/navbar/" role="button">View navbar docs
-                &raquo;</a>
+            <h1>Edit Hospital</h1>
+            <label>Id Hospital</label>
+            <input type="text" id="cajaId" disabled class="form-control" />
+            <label>Nombre</label>
+            <input type="text" id="cajaNombre" class="form-control" />
+            <label>Dirección</label>
+            <input type="text" id="cajaDireccion" class="form-control" />
+            <label>Teléfono</label>
+            <input type="text" id="cajaTelefono" class="form-control" />
+            <label>Camas</label>
+            <input type="text" id="cajaCamas" class="form-control" /><br />
+            <button id="botonUpdate" class="btn btn-danger">Update Hospital</button>
         </div>
     </main>
     <script src="js/jquery-3.7.1.js"></script>
@@ -130,7 +137,51 @@
     <script>
         let urlHospital = "https://apicrudhospital.azurewebsites.net/";
         $(document).ready(function () {
+            var params = new window.URLSearchParams(window.location.search); //Coge todos los parámetros del hospital seleccionado
+            var idHospitalURL = params.get("idhospital"); //Recoge el valor del parámetro
+            //console.log(idHospitalURL);
+            var requestFind = "webresources/hospitales/" + idHospitalURL;
+            //BUSCAMOS UN HOSPITAL Y LO DIBUJAMOS EN LAS CAJAS
+            $.ajax({
+                url: urlHospital + requestFind,
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    $("#cajaId").val(data.idhospital);
+                    $("#cajaNombre").val(data.nombre);
+                    $("#cajaDireccion").val(data.direccion);
+                    $("#cajaTelefono").val(data.telefono);
+                    $("#cajaCamas").val(data.camas);
+                }
+            })
 
+            $("#botonUpdate").click(function () {
+                var requestUpdate = "webresources/hospitales/put"
+                var id = parseInt($("#cajaId").val());
+                var nombre = $("#cajaNombre").val();
+                var direccion = $("#cajaDireccion").val();
+                var telefono = $("#cajaTelefono").val();
+                var camas = parseInt($("#cajaCamas").val());
+                //Creamos el objeto Hospital
+                var hospital = new Object();
+                hospital.idhospital = id;
+                hospital.nombre = nombre;
+                hospital.direccion = direccion;
+                hospital.telefono = telefono;
+                hospital.camas = camas;
+                //Convertimos objeto a JSON
+                var dataJSON = JSON.stringify(hospital);
+                $.ajax({
+                    url : urlHospital + requestUpdate,
+                    type : "PUT",
+                    contentType : "application/json",
+                    data : dataJSON,
+                    success : function(data){
+                        console.log("Modificado");
+                        window.location.href="web26indexhospitales.html";
+                    }
+                })
+            })
         })
     </script>
 </body>

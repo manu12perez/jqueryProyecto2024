@@ -127,6 +127,8 @@
                         <th>Dirección</th>
                         <th>Teléfono</th>
                         <th>Camas</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -152,12 +154,28 @@
                         html += "<td>" + hospital.direccion + "</td>"
                         html += "<td>" + hospital.telefono + "</td>"
                         html += "<td>" + hospital.camas + "</td>"
-                        html += "</tr>";
+                        html += "<td>";
+                        html += "<a href='web26edithospital.html?idhospital=" + hospital.idhospital + "'> Editar </a>"; //Pasamos el parámetro a la página edit
+                        html += "</td>";
+                        html += "<td>";
+                        html += "<a href='#' onclick='deleteHospital(" + hospital.idhospital + ")'>Delete</a>";
+                        html += "</td>";
                     })
                     $("#tablaHospitales tbody").html(html);
                 }
             })
         })
+
+        function deleteHospital(idhospital) {
+            var requestDelete = "/webresources/hospitales/delete/" + idhospital;
+            $.ajax({
+                url: urlHospital + requestDelete,
+                type: "DELETE",
+                success: function () {
+                    console.log("Eliminado");
+                }
+            })
+        }
     </script>
 </body>
 
