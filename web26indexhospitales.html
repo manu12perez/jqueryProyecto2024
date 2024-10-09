@@ -137,43 +137,67 @@
     </main>
     <script src="js/jquery-3.7.1.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
+    <!-- Enlace online sweetalert -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+    <script src="js/sweetalert2.all.min.js"></script>
+    <script src="css/sweetalert2.min.css"></script>
     <script>
         let urlHospital = "https://apicrudhospital.azurewebsites.net/";
         $(document).ready(function () {
-            var request = "webresources/hospitales";
-            $.ajax({
-                url: urlHospital + request,
-                type: "GET",
-                contentType: "application/json",
-                success: function (data) {
-                    var html = "";
-                    $.each(data, function (index, hospital) {
-                        html += "<tr>";
-                        html += "<td>" + hospital.idhospital + "</td>"
-                        html += "<td>" + hospital.nombre + "</td>"
-                        html += "<td>" + hospital.direccion + "</td>"
-                        html += "<td>" + hospital.telefono + "</td>"
-                        html += "<td>" + hospital.camas + "</td>"
-                        html += "<td>";
-                        html += "<a href='web26edithospital.html?idhospital=" + hospital.idhospital + "'> Editar </a>"; //Pasamos el parámetro a la página edit
-                        html += "</td>";
-                        html += "<td>";
-                        html += "<a href='#' onclick='deleteHospital(" + hospital.idhospital + ")'>Delete</a>";
-                        html += "</td>";
-                    })
-                    $("#tablaHospitales tbody").html(html);
-                }
-            })
+            cargarTabla();
         })
 
         function deleteHospital(idhospital) {
             var requestDelete = "/webresources/hospitales/delete/" + idhospital;
-            $.ajax({
-                url: urlHospital + requestDelete,
-                type: "DELETE",
-                success: function () {
-                    console.log("Eliminado");
+            // let respuesta = window.confirm("¿Estás seguro de eliminar el registro" + idhospital + "?")
+            Swal.fire({
+                title: "¿Estás seguro de eliminar el registro?",
+                text: "¡No podrás revertir el cambio!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "¡Si, borrar registro!",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "¡Eliminado!",
+                        text: "El registro ha sido eliminado.",
+                        icon: "success"
+                    });
+                    $.ajax({
+                        url: urlHospital + requestDelete,
+                        type: "DELETE",
+                        success: function () {
+                            console.log("Eliminado");
+                            cargarTabla();
+                        }
+                    })
                 }
+            });
+
+        }
+
+        function cargarTabla() {
+            var html = "";
+            var request = "webresources/hospitales";
+            $.getJSON(urlHospital + request, function (data) {
+                $.each(data, function (index, hospital) {
+                    html += "<tr>";
+                    html += "<td>" + hospital.idhospital + "</td>"
+                    html += "<td>" + hospital.nombre + "</td>"
+                    html += "<td>" + hospital.direccion + "</td>"
+                    html += "<td>" + hospital.telefono + "</td>"
+                    html += "<td>" + hospital.camas + "</td>"
+                    html += "<td>";
+                    html += "<a class='btn btn-primary' href='web26edithospital.html?idhospital=" + hospital.idhospital + "'> Editar </a>"; //Pasamos el parámetro a la página edit
+                    html += "</td>";
+                    html += "<td>";
+                    html += "<a class='btn btn-danger' href='#' onclick='deleteHospital(" + hospital.idhospital + ")'>Delete</a>";
+                    html += "</td>";
+                })
+                $("#tablaHospitales tbody").html(html);
             })
         }
     </script>

@@ -129,7 +129,7 @@
             <input type="text" id="cajaTelefono" class="form-control" />
             <label>Camas</label>
             <input type="text" id="cajaCamas" class="form-control" /><br />
-            <button id="botonUpdate" class="btn btn-danger">Update Hospital</button>
+            <button id="botonUpdate" class="btn btn-primary">Update Hospital</button>
         </div>
     </main>
     <script src="js/jquery-3.7.1.js"></script>
@@ -172,13 +172,13 @@
                 //Convertimos objeto a JSON
                 var dataJSON = JSON.stringify(hospital);
                 $.ajax({
-                    url : urlHospital + requestUpdate,
-                    type : "PUT",
-                    contentType : "application/json",
-                    data : dataJSON,
-                    success : function(data){
+                    url: urlHospital + requestUpdate,
+                    type: "PUT",
+                    contentType: "application/json",
+                    data: dataJSON,
+                    success: function (data) {
                         console.log("Modificado");
-                        window.location.href="web26indexhospitales.html";
+                        window.location.href = "web26indexhospitales.html";
                     }
                 })
             })
