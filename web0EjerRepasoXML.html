@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <h1>Buscar Personas por Ciudad</h1>
+    <select id="selectCiudad"></select>
+    <table id="customertable" border="1">
+      <thead>
+        <tr>
+          <th>City</th>
+          <th>Company Name</th>
+          <th>Contact Name</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+      var url = "https://northwind.netcore.io/customers.xml";
+      $(document).ready(function (data) {
+        console.log("Leyendo Servicio");
+        $.get(url, function (data) {
+          $(data).find("d2p1\\:Customer").each(function () {
+              var city = $(this).find("d2p1\\:City").text();
+              var option = $("<option>", { text: city });
+              $("#selectCiudad").append(option);
+            });
+        });
+
+        $("#selectCiudad").change(function () {
+          var filtro = $("#selectCiudad").val();
+          console.log(filtro);
+          
+          $.get(url, function (data) {
+            var html = "";
+            $(data).find("d2p1\\:Customer").each(function () {
+                var city = $(this).find("d2p1\\:City").text();                
+                if (filtro === city) {
+                  var contactName = $(this).find("d2p1\\:ContactName").text();
+                  var companyName = $(this).find("d2p1\\:CompanyName").text();
+                //   console.log(city);
+                  html += "<tr>";
+                  html += "<td>" + city + "</td>";
+                  html += "<td>" + companyName +"</td>";
+                  html += "<td>" + contactName + "</td>";
+                  html += "</tr>";                 
+                }                                 
+              });
+              $("#customertable tbody").html(html);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

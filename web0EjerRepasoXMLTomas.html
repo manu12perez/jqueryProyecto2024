@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service</title>
+</head>
+<body>
+    <h1>Customer XML Service</h1>
+    <select id="selectcity"></select>
+    <table id="customertable" border="1">
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Company Name</th>
+                <th>Contact Name</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <h1 id="mensaje" style="color: goldenrod;"></h1>
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            var url = "https://northwind.netcore.io/customers.xml";
+            
+            // Cargar las ciudades al entrar en la pÃ¡gina
+            $.get(url, function(data){
+                console.log("Cargando ciudades...");
+                var cities = [];
+                
+                // Recorrer cada Customer y obtener la ciudad
+                $(data).find("d2p1\\:Customer").each(function(){
+                    var city = $(this).find("d2p1\\:City").text();
+                    if(!cities.includes(city)){
+                        cities.push(city);
+                        var option = $("<option>", {"text": city});
+                        $("#selectcity").append(option);
+                    }
+                });
+                $("#mensaje").text("Ciudades cargadas: " + cities.length);
+            });
+
+            // Evento cuando el usuario selecciona una ciudad
+            $("#selectcity").change(function(){
+                var selectedCity = $("#selectcity").val();
+                var html = "";
+
+                // Limpiar la tabla antes de agregar nuevas filas
+                $("#customertable tbody").empty();
+
+                // Buscar todos los clientes que coinciden con la ciudad seleccionada
+                $.get(url, function(data){
+                    console.log("Filtrando por ciudad: " + selectedCity);
+                    
+                    $(data).find("d2p1\\:Customer").each(function(){
+                        var city = $(this).find("d2p1\\:City").text();
+                        var html="";
+                        if(city === selectedCity){
+                            var companyName = $(this).find("d2p1\\:CompanyName").text();
+                            var contactName = $(this).find("d2p1\\:ContactName").text();
+                            html += "<tr><td>" + city + "</td><td>" + companyName + "</td><td>" + contactName + "</td></tr>";
+                            $("#customertable tbody").append(html);
+                        }
+                    });
+
+                    $("#mensaje").text("Clientes en " + selectedCity + " cargados.");
+                });
+            });
+        });
+    </script>
+</body>
+</html>
